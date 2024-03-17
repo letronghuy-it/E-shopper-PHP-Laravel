@@ -50,14 +50,12 @@ class Shopcontroller extends Controller
     {
         $products = Product::orderby('created_at', 'desc')->get()->toArray();
         $data = $this->loadProducts($products);
-
         return response()->json(['dataproduct' => $data]);
     }
 
     // Search product
     public function Searchproduct(Request $request)
     {
-
         $query = Product::query();
         if (isset($request->search_name)) {
             $query->where('name', 'like', '%' . $request->search_name . '%');
@@ -92,13 +90,14 @@ class Shopcontroller extends Controller
 
     // SHOW PRODUCT DETAIL
     public function productdetail($id, Request $request)
-    {
+    {   $category = Category::all();
+        $brand    =    Brand::all();
         $productdetail = Product::where('products.id', $request->id)
             ->join('brands', 'products.id_brand', 'brands.id')
             ->join('categories', 'products.id_category', 'categories.id')
             ->select('products.*', 'brands.brand as brand', 'categories.category as category')
             ->first();
-        return view('Fontend.page.Home.Productdetail', compact('productdetail'));
+        return view('Fontend.page.Home.Productdetail', compact('productdetail','category','brand'));
     }
 
     public function Addtocart(Request $request)
@@ -294,6 +293,11 @@ class Shopcontroller extends Controller
                 'message'   => 'Lỗi hệ thống',
             ]);
         }
+    }
+    public function PageShop(Request $request){
+        $category = Category::all();
+        $brand    =    Brand::all();
+        return view('Fontend.page.Home.shop',compact('category', 'brand'));
     }
     // session()->has('cart'): kiem tra co SS k
     // session()->get('cart');  lấy SS ra

@@ -11,21 +11,52 @@ class CategorySeeder extends Seeder
 
     public function run()
     {
-            DB::table('categories')->delete();
-            DB::table('categories')->truncate();
-            
-            DB::table('categories')->insert([
-                ['category' => 'Áo'],
-                ['category' => 'Quần'],
-                ['category' => 'Giày'],
-                ['category' => 'Túi xách'],
-                ['category' => 'Đồ lót'],
-                ['category' => 'Phụ kiện'],
-                ['category' => 'Đồ thể thao'],
-                ['category' => 'Đồ ngủ'],
-                ['category' => 'Đồ bơi'],
-                ['category' => 'Đồ trẻ em']
-            ]);
+        DB::table('categories')->delete();
+        DB::table('categories')->truncate();
 
+        DB::table('categories')->insert([
+            [
+                'category' => 'Áo',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Quần',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Giày',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Túi xách',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Đồ lót',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Phụ kiện',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Đồ thể thao',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Đồ ngủ',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Đồ bơi',  'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'category' => 'Đồ trẻ em',  'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ]);
     }
 }

@@ -29,8 +29,13 @@ Route::group(['prefix'=>'/admin'],function(){
 
 });
 Route::group(['prefix'=>'/shop'],function(){
-    Route::group(['prefix'=>'/register-user'],function(){
-        Route::post('/', [ApiMembercontroller::class, 'createuser']);
+
+    Route::post('/register-user', [ApiMembercontroller::class, 'createuser']);
+    Route::post('/login-user', [ApiMembercontroller::class, 'actionLogin']);
+    Route::middleware(['auth:sanctum'])->group(function () {
+
+    Route::post('/user/product/add',[ApiMembercontroller::class, 'store']);
+    Route::get('/user/my-product',[ApiMembercontroller::class, 'myProduct']);
     });
 
 });

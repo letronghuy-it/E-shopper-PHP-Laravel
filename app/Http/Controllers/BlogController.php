@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Admin\BlogRequest;
 use App\Models\Blog;
 use App\Models\BlogComent;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Rate;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,7 +22,7 @@ class BlogController extends Controller
         return view('user.Blog.blog', compact('blogs'));
     }
     // Create Blog
-    public function store(Request $request)
+    public function store(BlogRequest $request)
     {
         $data = $request->all();
         $file  = $request->image;
@@ -79,13 +82,15 @@ class BlogController extends Controller
     /////////////////////////////////////////////-BLOG------FONTEND-/////////////////////////////////////
 
     public function indexFE()
-    {
+    {   $category = Category::all();
+        $brand    =    Brand::all();
         $blog = Blog::orderby('created_at', 'desc')->paginate(3);
-        return view('Fontend.page.Blog.indexBlogFE', compact('blog'));
+        return view('Fontend.page.Blog.indexBlogFE', compact('blog','category','brand'));
     }
     public function ShowBlogDetail(Request $request)
     {
-
+        $category = Category::all();
+        $brand    =    Brand::all();
         $blog = Blog::find($request->id);
         if ($blog) {
             $comments = Blog::join('blog_comments', 'blogs.id', 'blog_comments.id_blog')
@@ -95,7 +100,7 @@ class BlogController extends Controller
             $next = Blog::where('id', '>', $blog->id)->orderBy('id', 'asc')->first();
             $prev = Blog::where('id', '<', $blog->id)->orderBy('id', 'desc')->first();
 
-            return view('Fontend.page.Blog.indexBlogDetailFE', compact('blog', 'next', 'prev', 'comments'));
+            return view('Fontend.page.Blog.indexBlogDetailFE', compact('blog', 'next', 'prev', 'comments','category','brand'));
         } else {
             return redirect()->back()->withErrors('success', _('Không Tìm Thấy Blog'));
         }

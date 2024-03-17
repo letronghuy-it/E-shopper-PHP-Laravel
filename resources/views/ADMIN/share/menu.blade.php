@@ -36,6 +36,12 @@
                 <span class="hide-menu">Category</span>
             </a>
         </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link waves-effect waves-dark sidebar-link" href="/admin/history" aria-expanded="false">
+                <i class="mdi mdi-arrange-bring-forward"></i>
+                <span class="hide-menu">History</span>
+            </a>
+        </li>
 
 
     </ul>

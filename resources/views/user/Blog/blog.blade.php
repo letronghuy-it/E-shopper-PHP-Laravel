@@ -23,6 +23,10 @@
                                 <input type="text" name='title' placeholder="Title"
                                     class="form-control form-control-line">
                             </div>
+                            <p> @error('title')
+                                    <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </p>
                         </div>
 
                         <div class="form-group">
@@ -30,6 +34,10 @@
                             <div class="col-md-12 mb-2">
                                 <input type="file" name='image' class="form-control form-control-line">
                             </div>
+                            <p> @error('image')
+                                    <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </p>
                         </div>
 
                         <div class="form-group">
@@ -37,6 +45,10 @@
                             <div class="col-md-12 mb-2">
                                 <textarea placeholder="Description" id="editor1" class="form-control" name="description" id="demo"></textarea>
                             </div>
+                            <p> @error('description')
+                                    <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </p>
                         </div>
 
                         <div class="form-group">
@@ -44,6 +56,10 @@
                             <div class="col-md-12 mb-2">
                                 <textarea placeholder="Content" class="form-control" name="content" id="demo"></textarea>
                             </div>
+                            <p> @error('content')
+                                    <span style="color: red;">{{ $message }}</span>
+                                @enderror
+                            </p>
                         </div>
 
                     </div>
@@ -55,7 +71,7 @@
         </div>
         <div class="col-8">
             <div class="card">
-            <div class="card-header"><b>List Blog</b></div>
+                <div class="card-header"><b>List Blog</b></div>
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead>
@@ -70,13 +86,15 @@
                         <tbody>
                             @foreach ($blogs as $key => $value)
                                 <tr class="text-center align-middle">
-                                    <td class="text-center">{{$value->id}}</td>
-                                    <td class="text-center">{{$value->title}}</td>
-                                    <td class="text-center"><img class="img-fluid" width="50px"  height="50px" src="{{ asset('upload/blog/image/'.$value->image) }}" ></td>
-                                    <td class="text-center">{{$value->description}}</td>
+                                    <td class="text-center">{{ $value->id }}</td>
+                                    <td class="text-center">{{ $value->title }}</td>
+                                    <td class="text-center"><img class="img-fluid" width="50px" height="50px"
+                                            src="{{ asset('upload/blog/image/' . $value->image) }}"></td>
+                                    <td class="text-center">{{ $value->description }}</td>
                                     <td class="text-center text-nowrap">
-                                        <a class="btn btn-info" href="/admin/blog/edit-blog/{{$value->id}}" >Edit</a>
-                                        <a class="btn btn-danger" href="/admin/blog/delete-blog/{{$value->id}}">Remove</a>
+                                        <a class="btn btn-info" href="/admin/blog/edit-blog/{{ $value->id }}">Edit</a>
+                                        <a class="btn btn-danger"
+                                            href="/admin/blog/delete-blog/{{ $value->id }}">Remove</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -85,17 +103,17 @@
                 </div>
             </div>
             <div class="card-footer" style="float: right">
-                {{$blogs ->links('pagination::bootstrap-4')}}
+                {{ $blogs->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
 @endsection
 @section('js')
-<script type="text/javascript">
-    ClassicEditor
-        .create(document.querySelector('#editor1'))
-        .catch(error =>{
-            console.log(error);
-    });
-</script>
+    <script type="text/javascript">
+        ClassicEditor
+            .create(document.querySelector('#editor1'))
+            .catch(error => {
+                console.log(error);
+            });
+    </script>
 @endsection

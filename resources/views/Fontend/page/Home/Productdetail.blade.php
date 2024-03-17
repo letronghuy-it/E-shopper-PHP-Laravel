@@ -49,16 +49,17 @@
 
                 </div>
                 <div class="col-sm-7">
-                    <div class="product-information"><!--/product-information-->
+                    <div class="product-information">
                         <img src="/frontend/images/product-details/new.jpg" class="newarrival" alt="" />
                         <h2>{{ $productdetail->name }}</h2>
                         <p>Web ID: 1089772</p>
                         <img src="/frontend/images/product-details/rating.png" alt="" />
                         <span>
-                            <span>US $ {{ $productdetail->price }}</span>
+                            <span>{{ number_format($productdetail->price) }}đ</span>
                             <label>Quantity:</label>
                             <input type="text" value="1" />
-                            <button type="button" class="btn btn-fefault cart">
+                            <button type="button" class="btn btn-fefault cart" data-id={{ $productdetail->id }}
+                                id="add-to-cart">
                                 <i class="fa fa-shopping-cart"></i>
                                 Add to cart
                             </button>
@@ -262,11 +263,7 @@
                                 <li><a><i class="fa fa-clock-o"></i>12:41 PM</a></li>
                                 <li><a><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
                             </ul>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                                labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                                laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in
-                                voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                            <p><b>Write Your Review</b></p>
+                            <p><b>Viết Đánh Giá sản phẩm</b></p>
 
                             <form action="#">
                                 <span>
@@ -274,7 +271,16 @@
                                     <input type="email" placeholder="Email Address" />
                                 </span>
                                 <textarea name=""></textarea>
-                                <b>Rating: </b> <img src="/frontend/images/product-details/rating.png" alt="" />
+                                <b>Rating: </b> <div class="rate">
+                                    <div class="vote">
+                                        <div class="star_1 ratings_stars"><input value="1" type="hidden"></div>
+                                        <div class="star_2 ratings_stars"><input value="2" type="hidden"></div>
+                                        <div class="star_3 ratings_stars"><input value="3" type="hidden"></div>
+                                        <div class="star_4 ratings_stars"><input value="4" type="hidden"></div>
+                                        <div class="star_5 ratings_stars"><input value="5" type="hidden"></div>
+                                        <span class="rate-np"></span>
+                                    </div>
+                                </div>
                                 <button type="button" class="btn btn-default pull-right">
                                     Submit
                                 </button>
@@ -389,12 +395,66 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
             $("#similar-product img").click(function() {
                 var image = $(this).attr("src");
                 $(".view-product img").attr("src", image);
                 $(".view-product a").attr("href", image);
             });
+            $("#add-to-cart").click(function(e) {
+                e.preventDefault();
+                var checkLogin = "{{ Auth::Check() }}";
+                if (checkLogin) {
+                    var product_id = $(this).data('id');
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ url(route('add.to.cart')) }}',
+                        data: {
+                            product_id: product_id,
+                        },
+                        success: function(res) {
+                            $('#totalcart').text(res.totalqty);
+                        }
+                    });
+                } else {
+                    alert("Vui lòng đăng nhập để Add to cart.");
+                }
+            });
+
+            // Cập nhật lại số sao
+            function updateStars(averageRate) {
+                var fullStars = Math.round(averageRate);
+                var hasHalfStar = averageRate % 1 !== 0;
+
+                $('.rate-np').text(averageRate.toFixed(1));
+                $('.ratings_stars').removeClass('ratings_over').removeClass('ratings_half');
+
+                for (var i = 1; i <= fullStars; i++) {
+                    $('.star_' + i).addClass('ratings_over');
+                }
+
+                if (hasHalfStar) {
+                    $('.star_' + (fullStars + 1)).addClass('ratings_half');
+                }
+            }
+
+
+            // Hover cho ngôi sao
+            $('.ratings_stars').hover(
+                function() {
+                    $(this).prevAll().addBack().addClass('ratings_hover');
+                },
+                function() {
+                    $(this).prevAll().addBack().removeClass('ratings_hover');
+                }
+            );
         });
+
+
         $(".view-product a").prettyPhoto();
     </script>
 @endsection

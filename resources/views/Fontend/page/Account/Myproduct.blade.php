@@ -32,7 +32,7 @@
                                 <p>Web ID: 1089772</p>
                             </td>
                             <td class="cart_price" style="white-space: nowrap;">
-                                <p>{{ $value->price . ' $' }}</p>
+                                <p>{{ format_number($value->price) }}</p>
                             </td>
                             <td class="cart_quantity" >
                                 <div class="cart_quantity_button">
@@ -43,7 +43,7 @@
                                 </div>
                             </td>
                             <td class="cart_total" style="white-space: nowrap;">
-                                <p class="cart_total_price">{{ $value->price . ' $' }}</p>
+                                <p class="cart_total_price">{{ format_number($value->price) }}</p>
                             </td>
                             <td class="cart_delete" style="white-space: nowrap;">
                                 <a class="cart_quantity_delete" href="/shop/account/delete-product/{{$value->id}}"><i class="fa fa-times"></i></a>
@@ -57,5 +57,19 @@
         </div>
     </div>
 @endsection
-@section('js')
-@endsection
+@php
+    function format_number($number) {
+    if ($number >= 1000000000) {
+        return number_format($number / 1000000000, 1) . 'B';
+    }
+    else if ($number >= 1000000) {
+        return number_format($number / 1000000, 1) . 'M';
+    }
+    else if ($number >= 1000) {
+        return number_format($number / 1000, 1) . 'K';
+    }
+    return $number;
+}
+
+@endphp
+

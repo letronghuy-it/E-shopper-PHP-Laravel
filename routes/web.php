@@ -7,6 +7,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Dashboardcontroller;
+use App\Http\Controllers\historyController;
 use App\Http\Controllers\Membercontroller;
 use App\Http\Controllers\Shopcontroller;
 use App\Http\Controllers\Testcontroller;
@@ -42,17 +43,20 @@ Route::group([
     Route::get('/check-out', [Shopcontroller::class, 'Checkout'])->name('check.out');
     Route::post('/oder-bill', [Shopcontroller::class, 'Oder'])->name('oder.bill');
 
+    //shop
+    Route::get('/page-shop', [Shopcontroller::class, 'PageShop'])->name('page.shop');
 
 
-    Route::group(['middleware' => 'memberNotLogin'], function () {
+
+    // Route::group(['middleware' => 'memberNotLogin'], function () {
         //  Đăng Kí
         Route::get('/register-user', [Membercontroller::class, 'indexregister']);
         Route::post('/register-user', [Membercontroller::class, 'createuser']);
         //  Login
         Route::get('/login-user', [Membercontroller::class, 'indexLogin']);
         Route::post('/login-user', [Membercontroller::class, 'ActionLogin']);
-    });
-    
+    // });
+
     Route::group(['middleware' => 'member'], function () {
         //  Logout
         Route::get('/logout', [Membercontroller::class, 'ActionLogout']);
@@ -145,4 +149,10 @@ Route::group([
         Route::get('/edit-category/{id}', [CategoryController::class, 'edit']);
         Route::post('/update', [CategoryController::class, 'update']);
     });
+    Route::group(['prefix'=>'/history'],function(){
+        Route::get('/', [historyController::class, 'indexhistory']);
+
+        Route::get('/delete-history/{id}', [historyController::class, 'destroy']);
+    });
+
 });

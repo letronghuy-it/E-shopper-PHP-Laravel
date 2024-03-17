@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('blogs', function (Blueprint $table) {
@@ -18,16 +14,12 @@ return new class extends Migration
             $table->string('title');
             $table->string('image');
             $table->string('description');
-            $table->string('content')->nullable();
+            $table->longText('content')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+
     public function down()
     {
         Schema::dropIfExists('blogs');
