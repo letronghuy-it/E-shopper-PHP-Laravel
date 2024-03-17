@@ -22,7 +22,7 @@ class UpdateUserRequest extends FormRequest
 
             'name'       => 'required|max:191',
             'email'      => 'required|email|',
-            'password'   => 'required|min:8',
+            'password'   => 'required|min:9',
             'phone'      => 'required|numeric',
             'avatar'     => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
@@ -39,7 +39,7 @@ class UpdateUserRequest extends FormRequest
             'avatar'            => ':attribute: Hinh anh upload lên phải là hình',
             'mimes:'            => ':attribute: Hinh anh upload len phai dinh dạng như sau :jpeg,png,jpg,gif',
             'avatar'            => ':attribute: Hinh anh upload len vượt quá kích thước cho :max',
-            'password.*'        => ':attribute: Phải trên 8 kí tự'
+            'password.*'        => ':attribute: Phải trên 9 kí tự'
         ];
     }
 }
