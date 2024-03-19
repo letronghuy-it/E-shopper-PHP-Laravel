@@ -23,7 +23,7 @@
     <section>
         <div class="container">
             <div class="row">
-               @include('Fontend.share.menuleft')
+                @include('Fontend.share.menuleft')
 
                 <div class="col-sm-9 padding-right">
                     <div class="features_items"><!--features_items-->
@@ -522,18 +522,18 @@
             //Search Name
             $('#search-form').on('submit', function(e) {
                 e.preventDefault();
-                var search_name     = $('#search_name').val();
-                var search_price    = $('#search_price').val();
+                var search_name = $('#search_name').val();
+                var search_price = $('#search_price').val();
                 var search_category = $('#search_category').val();
-                var search_brand    = $('#search_brand').val();
+                var search_brand = $('#search_brand').val();
                 $.ajax({
                     type: 'POST',
                     url: '{{ url(route('search.product')) }}',
                     data: {
-                        search_name: search_name         ? search_name : "",
-                        search_price: search_price       ? search_price : "",
+                        search_name: search_name ? search_name : "",
+                        search_price: search_price ? search_price : "",
                         search_category: search_category ? search_category : "",
-                        search_brand: search_brand       ? search_brand : ""
+                        search_brand: search_brand ? search_brand : ""
                     },
                     success: function(res) {
                         renderProducts(res.data);
@@ -574,10 +574,10 @@
                     type: 'POST',
                     url: '{{ url(route('search.product')) }}',
                     data: {
-                        search_brand:search_brand
+                        search_brand: search_brand
                     },
                     success: function(res) {
-                       renderProducts(res.data)
+                        renderProducts(res.data)
                     }
                 });
             })
@@ -590,38 +590,50 @@
                 } else {
                     $.each(dataproduct, function(key, value) {
                         html += `<div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img width="110px" height="110px"
-                                    src="/upload/user/${value.product.id_user}/image_product/${value.image}" alt="">
-                                <h2>${convert(value.product.price)}</h2>
+                <div class="product-image-wrapper">
+                    <div class="single-products">
+                        <div class="productinfo text-center" >
+                            <img width="110px" height="110px"
+                                src="/upload/user/${value.product.id_user}/image_product/${value.image}" >
+                            <h2>${convert(value.product.price)} </h2>
+                            <p>${value.product.name}</p>
+                            <button class="btn btn-default add-to-cart"
+                                data-id="${value.product.id}"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                        </div>
+                        <div class="product-overlay">
+
+                             <div id="qrcode${value.product.id}"></div>
+                            <div class="overlay-content">
+                                <h2>${value.product.price}</h2>
                                 <p>${value.product.name}</p>
                                 <button class="btn btn-default add-to-cart"
                                     data-id="${value.product.id}"><i class="fa fa-shopping-cart"></i>Add to cart</button>
                             </div>
-                            <div class="product-overlay">
-                                <div class="overlay-content">
-                                    <h2>${value.product.price}</h2>
-                                    <p>${value.product.name}</p>
-                                    <button class="btn btn-default add-to-cart"
-                                        data-id="${value.product.id}"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="choose">
-                            <ul class="nav nav-pills nav-justified">
-                                <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                                <li><a href="/shop/product-detail/${value.product.id}"><i
-                                            class="fa fa-eye"></i>See details</a></li>
-                            </ul>
                         </div>
                     </div>
-                </div>`;
+                    <div class="choose">
+                        <ul class="nav nav-pills nav-justified">
+                            <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                            <li><a href="/shop/product-detail/${value.product.id}"><i
+                                        class="fa fa-eye"></i>See details</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>`;
                     });
                 }
                 $('#products').html(html);
+                //Mã QR code
+                // $.each(dataproduct, function(key, value) {
+                //     var qrcode = new QRCode(document.getElementById("qrcode" + value.product.id), {
+                //         text: "http://127.0.0.1:8000/shop/product-detail/" + value.product.id,
+                //         width: 70,
+                //         height: 70
+
+                //     });
+                // });
             }
+
 
             function loadData(dataproduct) {
                 $.ajax({
@@ -632,6 +644,7 @@
                     }
                 });
             }
+
             function convert(number) {
                 return new Intl.NumberFormat('vi-VI', {
                     style: 'currency',
@@ -640,7 +653,7 @@
             }
         })
     </script>
-
+   
 </body>
 
 </html>

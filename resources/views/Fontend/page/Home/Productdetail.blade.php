@@ -259,19 +259,27 @@
                     <div class="tab-pane fade active in" id="reviews">
                         <div class="col-sm-12">
                             <ul>
-                                <li><a><i class="fa fa-user"></i>EUGEN</a></li>
-                                <li><a><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-                                <li><a><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+                                @php
+                                    date_default_timezone_set('Asia/Ho_Chi_Minh');
+                                @endphp
+
+                                <li><a><i class="fa fa-user"></i>{{ Auth::user() ? Auth::user()->name : 'Khách' }}</a></li>
+                                <li><a><i class="fa fa-clock-o"></i>{{ date('H:i:s') }}</a></li>
+                                <li><a><i class="fa fa-calendar-o"></i>{{ date('d M Y', strtotime(now())) }}</a></li>
+
                             </ul>
                             <p><b>Viết Đánh Giá sản phẩm</b></p>
 
                             <form action="#">
                                 <span>
-                                    <input type="text" placeholder="Your Name" />
-                                    <input type="email" placeholder="Email Address" />
+                                    <input type="text" placeholder="Your Name"
+                                        value="{{ Auth::user() ? Auth::user()->name : ' ' }}" />
+                                    <input type="email" placeholder="Email Address"
+                                        value="{{ Auth::user() ? Auth::user()->email : ' ' }}" />
                                 </span>
                                 <textarea name=""></textarea>
-                                <b>Rating: </b> <div class="rate">
+                                <b>Rating: </b>
+                                <div class="rate">
                                     <div class="vote">
                                         <div class="star_1 ratings_stars"><input value="1" type="hidden"></div>
                                         <div class="star_2 ratings_stars"><input value="2" type="hidden"></div>
@@ -426,21 +434,21 @@
             });
 
             // Cập nhật lại số sao
-            function updateStars(averageRate) {
-                var fullStars = Math.round(averageRate);
-                var hasHalfStar = averageRate % 1 !== 0;
+            // function updateStars(averageRate) {
+            //     var fullStars = Math.round(averageRate);
+            //     var hasHalfStar = averageRate % 1 !== 0;
 
-                $('.rate-np').text(averageRate.toFixed(1));
-                $('.ratings_stars').removeClass('ratings_over').removeClass('ratings_half');
+            //     $('.rate-np').text(averageRate.toFixed(1));
+            //     $('.ratings_stars').removeClass('ratings_over').removeClass('ratings_half');
 
-                for (var i = 1; i <= fullStars; i++) {
-                    $('.star_' + i).addClass('ratings_over');
-                }
+            //     for (var i = 1; i <= fullStars; i++) {
+            //         $('.star_' + i).addClass('ratings_over');
+            //     }
 
-                if (hasHalfStar) {
-                    $('.star_' + (fullStars + 1)).addClass('ratings_half');
-                }
-            }
+            //     if (hasHalfStar) {
+            //         $('.star_' + (fullStars + 1)).addClass('ratings_half');
+            //     }
+            // }
 
 
             // Hover cho ngôi sao
@@ -452,6 +460,12 @@
                     $(this).prevAll().addBack().removeClass('ratings_hover');
                 }
             );
+            $('.ratings_stars').click(function(e) {
+                var rate = $(this).find("input").val();
+
+                console.log(rate);
+            })
+
         });
 
 

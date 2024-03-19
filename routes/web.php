@@ -16,6 +16,7 @@ use App\Models\Blog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,6 +27,8 @@ Route::group([
 
     // Trang Chủ
     Route::get('/', [Shopcontroller::class, 'index']);
+    //testQR
+     
     Route::get('/load-data-product', [Shopcontroller::class, 'loadproduct'])->name('load.data.product');
     Route::get('/product-detail/{id}', [Shopcontroller::class, 'productdetail']);
     // ALL SEARCH
