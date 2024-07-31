@@ -223,7 +223,6 @@
                             id_blog: id_blog
                         },
                         success: function(data) {
-                            console.log(data);
                             updateStars(data.averageRate);
                             console.log('Click : ' + data.averageRate);
                         }

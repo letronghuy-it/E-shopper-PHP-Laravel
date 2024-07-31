@@ -149,7 +149,7 @@ class BlogController extends Controller
         $id = $request->id_comment;
         $level = 0;
         if (isset($id)) {
-            $level =$id;
+            $level = $id;
         }
         $data = [
             'comment' =>  $request->comment,

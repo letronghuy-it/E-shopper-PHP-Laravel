@@ -272,10 +272,10 @@
 
                             <form action="#">
                                 <span>
-                                    <input type="text" placeholder="Your Name"
-                                        value="{{ Auth::user() ? Auth::user()->name : ' ' }}" />
-                                    <input type="email" placeholder="Email Address"
-                                        value="{{ Auth::user() ? Auth::user()->email : ' ' }}" />
+                                    <input type="text"  disabled
+                                        value="{{ Auth::user() ? Auth::user()->name : 'Your Name' }}" id="name" />
+                                    <input disabled type="email"
+                                        value="{{ Auth::user() ? Auth::user()->email : 'Email Address' }}" id="email" />
                                 </span>
                                 <textarea name=""></textarea>
                                 <b>Rating: </b>
@@ -289,7 +289,7 @@
                                         <span class="rate-np"></span>
                                     </div>
                                 </div>
-                                <button type="button" class="btn btn-default pull-right">
+                                <button type="submit" class="btn btn-default pull-right">
                                     Submit
                                 </button>
                             </form>
@@ -461,10 +461,27 @@
                 }
             );
             $('.ratings_stars').click(function(e) {
-                var rate = $(this).find("input").val();
-
-                console.log(rate);
+                var checkLogin = "{{ Auth::Check() }}";
+                if (checkLogin) {
+                    var rate = $(this).find("input").val();
+                } else {
+                    alert('Yêu cầu đăng nhập mới được Login!');
+                }
             })
+            $('form').submit(function(e) {
+                e.preventDefault();
+                var checkLogin = "{{ Auth::Check() }}";
+                if (checkLogin) {
+                    var name = $('#name').val();
+                    var email = $('#email').val();
+                    var textarea = $('textarea').val();
+
+                } else {
+                    alert('Yêu cầu đăng nhập mới được Login!');
+                }
+
+            });
+
 
         });
 

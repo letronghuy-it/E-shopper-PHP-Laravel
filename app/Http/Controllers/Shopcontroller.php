@@ -62,7 +62,7 @@ class Shopcontroller extends Controller
         }
         if (isset($request->search_price)) {
             $price_range = explode('-', $request->search_price);
-            $min_price = $price_range[0];
+            $min_price   = $price_range[0];
             $max_price = $price_range[1];
             $query->whereBetween('price', [$min_price, $max_price]);
         }
@@ -90,8 +90,8 @@ class Shopcontroller extends Controller
 
     // SHOW PRODUCT DETAIL
     public function productdetail($id, Request $request)
-    {   $category = Category::all();
-        $brand    =    Brand::all();
+    {   $category      = Category::all();
+        $brand         =    Brand::all();
         $productdetail = Product::where('products.id', $request->id)
             ->join('brands', 'products.id_brand', 'brands.id')
             ->join('categories', 'products.id_category', 'categories.id')
@@ -102,9 +102,9 @@ class Shopcontroller extends Controller
 
     public function Addtocart(Request $request)
     {
-        $id_product =  $request->product_id;
-        $id_user = Auth::id();
-        $product = Product::where('id', $id_product)->first()->toArray();
+        $id_product  =  $request->product_id;
+        $id_user     = Auth::id();
+        $product     = Product::where('id', $id_product)->first()->toArray();
         if ($product) {
             if (session()->has('cart')) {
                 $cart = session()->get('cart');
