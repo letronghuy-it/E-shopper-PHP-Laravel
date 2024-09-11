@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('blog_comments', function (Blueprint $table) {
+        Schema::create('blog_coments', function (Blueprint $table) {
             $table->id();
             $table->string('comment');
             $table->integer('id_blog');

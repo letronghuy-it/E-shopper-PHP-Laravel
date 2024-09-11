@@ -19,27 +19,27 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'id'         => 'required|exists:users,id',
             'name'       => 'required|max:191',
             'email'      => 'required|email|',
             'password'   => 'required|min:9',
             'phone'      => 'required|numeric',
-            'avatar'     => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'avatar'   => 'required|image|mimes:jpeg,png,jpg,gif|max:5120'
         ];
     }
 
     public function messages()
     {
         return [
-
-            'required'          => ':attribute: Không được để trống!',
-            'max'               => ':attribute: Không được quá :max kí tự',
-            'email.email'       => ':attribute: email sai định dạng',
-            'phone.*'           => ':attribute: Yêu cầu phải là số  Phải là số',
-            'avatar'            => ':attribute: Hinh anh upload lên phải là hình',
-            'mimes:'            => ':attribute: Hinh anh upload len phai dinh dạng như sau :jpeg,png,jpg,gif',
-            'avatar'            => ':attribute: Hinh anh upload len vượt quá kích thước cho :max',
-            'password.*'        => ':attribute: Phải trên 9 kí tự'
+            'id.exists'         => 'Người dùng không tồn tại',
+            'required'          => ':attribute không được để trống!',
+            'max'               => ':attribute không được quá :max kí tự',
+            'email.email'       => ':attribute sai định dạng email',
+            'phone.numeric'     => ':attribute yêu cầu phải là số',
+            'avatar.image'      => ':attribute phải là hình ảnh',
+            'avatar.mimes'      => ':attribute phải có định dạng như sau: jpeg, png, jpg, gif',
+            'avatar.max'        => ':attribute vượt quá kích thước cho phép :max KB',
+            'password.min'      => ':attribute phải trên 9 kí tự'
         ];
     }
 }

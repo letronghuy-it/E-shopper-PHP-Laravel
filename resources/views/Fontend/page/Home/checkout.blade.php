@@ -215,17 +215,20 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-
         $('#continue').click(function() {
-            $.ajax({
-                type: 'POST',
-                url: '{{ url(route('oder.bill')) }}',
-                success: function(res) {
-                    alert(res.message);
-                    location.reload();
-                }
-            });
+            var checkLogin = "{{ Auth::Check() }}";
+            if (checkLogin) {
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url(route('oder.bill')) }}',
+                    success: function(res) {
+                        alert(res.message);
+                        location.reload();
+                    }
+                });
+            }else{
+                alert("Vui lòng đăng nhập để Mua Hàng.");
+            }
         })
 
         function convert(number) {

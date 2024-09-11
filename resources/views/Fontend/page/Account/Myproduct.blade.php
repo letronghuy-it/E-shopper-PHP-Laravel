@@ -46,8 +46,8 @@
                                 <p class="cart_total_price">{{ format_number($value->price) }}</p>
                             </td>
                             <td class="cart_delete" style="white-space: nowrap;">
-                                <a class="cart_quantity_delete" href="/shop/account/delete-product/{{$value->id}}"><i class="fa fa-times"></i></a>
-                                <a class="cart_quantity_edit" href="/shop/account/edit-product/{{$value->id}}"><i class="fa fa-edit"></i></a>
+                                <a class="cart_quantity_delete" href="/admin/delete-product/{{$value->id}}"><i class="fa fa-times"></i></a>
+                                <a class="cart_quantity_edit" href="/admin/edit-product/{{$value->id}}"><i class="fa fa-edit"></i></a>
                             </td>
                         </tr>
                     @endforeach

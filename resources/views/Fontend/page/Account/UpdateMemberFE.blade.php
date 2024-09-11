@@ -6,23 +6,23 @@
             <h2 class="title text-center">Update user</h2>
             <div class="signup-form"><!--sign up form-->
                 <h2>New User Signup!</h2>
-                <form action="/shop/account/update-account" method="POST">
+                <form action="/shop/account/update-account" method="POST" enctype="multipart/form-data">
                     @csrf
                     @if ($errors->any())
                     @endif
-                    <input type="hidden" value="{{ Auth::user()->id }}">
+                    <input type="hidden" value="{{ Auth::user()->id }}" name="id">
 
-                    <input type="text" placeholder="Name" value="{{ Auth::user()->name }}">
+                    <input type="text" placeholder="Name" value="{{ Auth::user()->name }}" name="name">
                     @error('name')
                         <span style="color: red;">{{ $message }}</span>
                     @enderror
 
-                    <input type="email" placeholder="Email Address" value="{{ Auth::user()->email }}">
+                    <input type="email" placeholder="Email Address" value="{{ Auth::user()->email }}" name="email">
                     @error('email')
                         <span style="color: red;">{{ $message }}</span>
                     @enderror
 
-                    <input type="password" placeholder="Password" value="{{ Auth::user()->password }}">
+                    <input type="password" placeholder="Password" value="{{ Auth::user()->password }}" name="password">
                     @error('password')
                         <span style="color: red;">{{ $message }}</span>
                     @enderror
@@ -61,5 +61,4 @@
         </div>
     </div>
 @endsection
-@section('js')
-@endsection
+

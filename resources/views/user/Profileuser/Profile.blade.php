@@ -47,7 +47,7 @@
                         @csrf
                         @if ($errors->any())
                         @endif
-                        <input type="text" value="{{ Auth::user()->id }}" hidden>
+                        <input type="text" value="{{ Auth::user()->id }}" hidden name="id">
                         <div class="form-group">
                             <label class="col-md-12">Avatar</label>
                             <div class="col-md-12">

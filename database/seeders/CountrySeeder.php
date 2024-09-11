@@ -11,10 +11,10 @@ class CountrySeeder extends Seeder
 
     public function run()
     {
-        DB::table('countrys')->delete();
-        DB::table('countrys')->truncate();
+        DB::table('countries')->delete();
+        DB::table('countries')->truncate();
 
-        DB::table('countrys')->insert([
+        DB::table('countries')->insert([
             // Các quốc gia ở Châu Âu
             ['title' => 'Albania'],
             ['title' => 'Andorra'],

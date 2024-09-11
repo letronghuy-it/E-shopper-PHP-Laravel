@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\History;
+use App\Models\InvoiceDetail;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -90,14 +91,15 @@ class Shopcontroller extends Controller
 
     // SHOW PRODUCT DETAIL
     public function productdetail($id, Request $request)
-    {   $category      = Category::all();
+    {
+        $category      = Category::all();
         $brand         =    Brand::all();
         $productdetail = Product::where('products.id', $request->id)
             ->join('brands', 'products.id_brand', 'brands.id')
             ->join('categories', 'products.id_category', 'categories.id')
             ->select('products.*', 'brands.brand as brand', 'categories.category as category')
             ->first();
-        return view('Fontend.page.Home.Productdetail', compact('productdetail','category','brand'));
+        return view('Fontend.page.Home.Productdetail', compact('productdetail', 'category', 'brand'));
     }
 
     public function Addtocart(Request $request)
@@ -161,7 +163,7 @@ class Shopcontroller extends Controller
                 $totalprice += $product['price'] * $product['quantity'];
             }
         }
-        //tổng Quantity
+        //tổng Quantity = dungc coun vẫng được
         $totalQuantity = array_sum(array_column($getcart, 'quantity'));
         return response()->json([
             'status'      => true,
@@ -278,14 +280,28 @@ class Shopcontroller extends Controller
             'id_user'   => $member['id'],
             'price'     => $totalprice
         ];
+        //Phải tạo ra 1 cái hoá đơn mới
         if (!empty($getcart)) {
             Mail::to($member['email'])->send(new Sendemailbill($data));
-            History::create($history);
+            $createdHistory     =   History::create($history);
+            $idHistory          = $createdHistory->id;
+            foreach ($getcart as $key => $value) {
+                $invoice_details = [
+                    'id_history'    => $idHistory,
+                    'id_product'    => $key,
+                    'name_product'  => $value['name'],
+                    'qty'           => $value['quantity'],
+                    'price'         => $value['price'],
+                    'image_product' => $value['image'],
+                    'total_amount'  => $value['price'] * $value['quantity']
+                ];
+                InvoiceDetail::create($invoice_details);
+            }
             session()->forget('cart');
             session()->forget('totalQuantity');
             return response()->json([
                 'status'    => true,
-                'message'   => 'Bạn đã đặt thành công đơn hàng vui lòng kiểm tra Email',
+                'message'   => 'Bạn đã đặt thành công đơn hàng, vui lòng kiểm tra Email',
             ]);
         } else {
             return response()->json([
@@ -294,10 +310,16 @@ class Shopcontroller extends Controller
             ]);
         }
     }
-    public function PageShop(Request $request){
+    public function PageShop(Request $request)
+    {
         $category = Category::all();
         $brand    =    Brand::all();
-        return view('Fontend.page.Home.shop',compact('category', 'brand'));
+        return view('Fontend.page.Home.shop', compact('category', 'brand'));
+    }
+
+    public function viewContract()
+    {
+        return view('Fontend.page.Reach.Reach');
     }
     // session()->has('cart'): kiem tra co SS k
     // session()->get('cart');  lấy SS ra

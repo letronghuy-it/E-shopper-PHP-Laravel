@@ -11,7 +11,7 @@
             <h2 class="title text-center">Update Product</h2>
             <div class="signup-form">
                 <h2>Update product Signup!</h2>
-                <form method="POST" enctype="multipart/form-data">
+                <form action="{{ url('/admin/edit-product/' . $product->id) }}" method="POST" enctype="multipart/form-data" >
                     @csrf
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible"

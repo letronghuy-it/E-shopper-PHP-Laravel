@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admincontroller;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BlogController;
@@ -15,7 +16,7 @@ use App\Http\Controllers\Usercontroller;
 use App\Models\Blog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
+use PHPUnit\TextUI\XmlConfiguration\Group;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 Route::get('/', function () {
@@ -28,7 +29,7 @@ Route::group([
     // Trang Chủ
     Route::get('/', [Shopcontroller::class, 'index']);
     //testQR
-     
+
     Route::get('/load-data-product', [Shopcontroller::class, 'loadproduct'])->name('load.data.product');
     Route::get('/product-detail/{id}', [Shopcontroller::class, 'productdetail']);
     // ALL SEARCH
@@ -52,12 +53,12 @@ Route::group([
 
 
     // Route::group(['middleware' => 'memberNotLogin'], function () {
-        //  Đăng Kí
-        Route::get('/register-user', [Membercontroller::class, 'indexregister']);
-        Route::post('/register-user', [Membercontroller::class, 'createuser']);
-        //  Login
-        Route::get('/login-user', [Membercontroller::class, 'indexLogin']);
-        Route::post('/login-user', [Membercontroller::class, 'ActionLogin']);
+    //  Đăng Kí
+    Route::get('/register-user', [Membercontroller::class, 'indexregister']);
+    Route::post('/register-user', [Membercontroller::class, 'createuser']);
+    //  Login
+    Route::get('/login-user', [Membercontroller::class, 'indexLogin']);
+    Route::post('/login-user', [Membercontroller::class, 'ActionLogin']);
     // });
 
     Route::group(['middleware' => 'member'], function () {
@@ -80,18 +81,6 @@ Route::group([
             // Update Account Member
             Route::get('/update-account', [Membercontroller::class, 'IndexAccount'])->name('Account.Member');
             Route::post('/update-account', [Membercontroller::class, 'UpdateAccount'])->name('Account.Member');
-
-            // ADD PRODUCT
-            Route::get('/add-product', [Membercontroller::class, 'IndexAddproduct'])->name('Add.product');
-            Route::post('/add-product', [Membercontroller::class, 'Addproduct']);
-            // My Product
-            Route::get('/my-product', [Membercontroller::class, 'Myproduct'])->name('My.product');
-
-            //Delete Product
-            Route::get('/delete-product/{id}', [Membercontroller::class, 'destroyProduct']);
-            //Edit Product
-            Route::get('/edit-product/{id}', [Membercontroller::class, 'EditProduct']);
-            Route::post('/edit-product/{id}', [Membercontroller::class, 'UpdateProduct']);
         });
     });
 });
@@ -104,10 +93,10 @@ Route::group([
     'prefix' => 'admin',
     'namespace' => 'Auth'
 ], function () {
-    Route::get('/',[LoginController::class, 'showLoginForm']);
-    Route::get('/login',[LoginController::class, 'showLoginForm']);
-    Route::post('/login',[LoginController::class, 'login']);
-    Route::get('/logout',[LoginController::class, 'logout']);
+    Route::get('/', [LoginController::class, 'showLoginForm']);
+    Route::get('/login', [LoginController::class, 'showLoginForm']);
+    Route::post('/login', [LoginController::class, 'login']);
+    Route::get('/logout', [LoginController::class, 'logout']);
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -121,6 +110,19 @@ Route::group([
     Route::get('/dashboard', [Dashboardcontroller::class, 'index']);
     Route::get('/update-profile', [UserController::class, 'indexprofile'])->name('profile');
     Route::post('/update-profile', [UserController::class, 'update'])->name('user.update.profile');
+
+    // ADD PRODUCT
+    Route::get('/add-product', [Membercontroller::class, 'IndexAddproduct'])->name('Add.product');
+    Route::post('/add-product', [Membercontroller::class, 'Addproduct']);
+    // My Product
+    Route::get('/my-product', [Membercontroller::class, 'Myproduct'])->name('My.product');
+
+    //Delete Product
+    Route::get('/delete-product/{id}', [Membercontroller::class, 'destroyProduct']);
+    //Edit Product
+    Route::get('/edit-product/{id}', [Membercontroller::class, 'EditProduct']);
+    Route::post('/edit-product/{id}', [Membercontroller::class, 'UpdateProduct']);
+
 
     Route::group(['prefix' => '/country'], function () {
         Route::get('/', [CountryController::class, 'indexcountry']);
@@ -152,10 +154,28 @@ Route::group([
         Route::get('/edit-category/{id}', [CategoryController::class, 'edit']);
         Route::post('/update', [CategoryController::class, 'update']);
     });
-    Route::group(['prefix'=>'/history'],function(){
-        Route::get('/', [historyController::class, 'indexhistory']);
-
+    Route::group(['prefix' => '/history'], function () {
+        Route::get('/', [historyController::class, 'indexhistory'])->name('search.bil.history');
         Route::get('/delete-history/{id}', [historyController::class, 'destroy']);
+        Route::post('/filter-history-nótell', [historyController::class, 'loadhistory']);
+        Route::get('/change-approve/{id}', [historyController::class, 'changeApprove']);
+        // Search-bill
+        Route::get('/search-bill-paided', [HistoryController::class, 'paided'])->name('search.bil.paided');
+        Route::get('/search-bill-unpaid', [HistoryController::class, 'unpaid'])->name('search.bil.unpaid');
+        Route::get('/search-bill-unapprove', [HistoryController::class, 'unapprove'])->name('search.bil.unapprove');
+
+        Route::get('/detail-history', [HistoryController::class, 'detailhistory'])->name('search.bil.unapprove');
+        Route::get('/invoice-detail/{id}', [HistoryController::class, 'viewinvoicedetail'])->name('invoice-detail');
+
     });
 
+    Route::group(['prefix'=>'/account-user'],function(){
+        Route::get('/',[AccountController::class,'viewAccoutuser'])->name('user.Account.indexAccount');
+
+        Route::get('/delete/{id}',[AccountController::class,'destroyAcountuser']);
+        Route::get('/block/{id}',[AccountController::class,'BlockAcountuser']);
+
+        Route::get('/update-password/{id}',[AccountController::class,'EditAcountuser']);
+        Route::post('/update-password',[AccountController::class,'UpdateAcountuser']);
+    });
 });

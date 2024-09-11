@@ -6,7 +6,7 @@
             <h2 class="title text-center">Create Product</h2>
             <div class="signup-form">
                 <h2>New product Signup!</h2>
-                <form action="/shop/account/add-product" method="POST" enctype="multipart/form-data">
+                <form action="/admin/add-product" method="POST" enctype="multipart/form-data">
                     @csrf
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible"

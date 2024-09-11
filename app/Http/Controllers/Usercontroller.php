@@ -30,8 +30,6 @@ class Usercontroller extends Controller
 
         if (!empty($data['password'])) {
             $data['password'] = bcrypt($data['password']);
-        } else {
-            $data['password'] = $user->password;
         }
         if ($user->update($data)) {
             if(!empty($file)){

@@ -502,22 +502,17 @@
             //ADD product to cart
             $(document).on('click', '.product-overlay .add-to-cart', function(e) {
                 e.preventDefault();
-                var checkLogin = "{{ Auth::Check() }}";
-                if (checkLogin) {
-                    var product_id = $(this).data('id');
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ url(route('add.to.cart')) }}',
-                        data: {
-                            product_id: product_id,
-                        },
-                        success: function(res) {
-                            $('#totalcart').text(res.totalqty);
-                        }
-                    });
-                } else {
-                    alert("Vui lòng đăng nhập để Add to cart.");
-                }
+                var product_id = $(this).data('id');
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url(route('add.to.cart')) }}',
+                    data: {
+                        product_id: product_id,
+                    },
+                    success: function(res) {
+                        $('#totalcart').text(res.totalqty);
+                    }
+                });
             });
             //Search Name
             $('#search-form').on('submit', function(e) {
@@ -653,7 +648,7 @@
             }
         })
     </script>
-   
+
 </body>
 
 </html>

@@ -22,7 +22,8 @@ class User extends Authenticatable
         'message',
         'id_country',
         'avatar',
-        'level'
+        'level',
+        'status'
     ];
 
 

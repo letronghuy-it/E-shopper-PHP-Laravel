@@ -113,7 +113,7 @@
                                 </ul>
                             </li>
                             <li><a href="404.html">404</a></li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            <li><a href="/shop/view-contract">Contact</a></li>
                         </ul>
                     </div>
                 </div>
