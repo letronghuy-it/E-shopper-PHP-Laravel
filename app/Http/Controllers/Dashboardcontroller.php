@@ -8,6 +8,6 @@ class Dashboardcontroller extends Controller
 {
     public function index()
     {
-         return view('ADMIN.share.master');
+         return view('user.Statistacal.indexView');
     }
 }

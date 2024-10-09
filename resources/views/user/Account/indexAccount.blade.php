@@ -22,12 +22,12 @@
                 <thead>
                     <tr class="text-center align-middle">
                         <th class="text-center">ID</th>
-                        <th class="text-center">Name User</th>
+                        <th class="text-center">Tên Người Dùng</th>
                         <th class="text-center">Email</th>
-                        <th class="text-center">Phone</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Change Password</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center">Số điện thoại</th>
+                        <th class="text-center">Tình Trạng</th>
+                        <th class="text-center">Đổi Mật Khẩu</th>
+                        <th class="text-center">Hoạt động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,14 +41,14 @@
                                 <th class="text-center">
                                     @if ($value['status'] == 0)
                                         <a class="btn btn-success"
-                                            href="/admin/account-user/block/{{ $value['id'] }}"><b>Activity</b></a>
+                                            href="/admin/account-user/block/{{ $value['id'] }}"><b>Hoạt Động</b></a>
                                     @else
                                         <a class="btn btn-danger"
-                                            href="/admin/account-user/block/{{ $value['id'] }}"><b>Block</b></a>
+                                            href="/admin/account-user/block/{{ $value['id'] }}"><b>Khoá</b></a>
                                     @endif
                                 </th>
                                 <th class="text-center"> <a class="btn btn-info"
-                                        href="/admin/account-user/update-password/{{ $value['id'] }}"><b>Change_Password</b></a>
+                                        href="/admin/account-user/update-password/{{ $value['id'] }}"><b>Đổi mật khẩu</b></a>
                                 </th>
                                 <th class="text-center text-nowrap">
                                     <a class="btn btn-danger"

@@ -90,7 +90,7 @@
                         <li class="media">
                             <a class="pull-left" href="#">
                                 <img class="media-object" width="100px" height="100px"
-                                    src="{{ asset('upload/user/avatar/' . $comment['avatar']) }}" alt="">
+                                    src="{{ asset('/upload/user/avatar/' . $comment['avatar']) }}" alt="">
                             </a>
                             <div class="media-body">
                                 <ul class="sinlge-post-meta">

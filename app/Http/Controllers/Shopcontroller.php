@@ -9,9 +9,11 @@ use App\Models\Country;
 use App\Models\History;
 use App\Models\InvoiceDetail;
 use App\Models\Product;
+use App\Models\ReviewProduct;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Console\Input\Input;
 
@@ -92,6 +94,8 @@ class Shopcontroller extends Controller
     // SHOW PRODUCT DETAIL
     public function productdetail($id, Request $request)
     {
+        $id            = Auth::id();
+        $Review        = ReviewProduct::where('id_user',$id)->where('id_product',$request->id)->get()->toArray();
         $category      = Category::all();
         $brand         =    Brand::all();
         $productdetail = Product::where('products.id', $request->id)
@@ -99,7 +103,7 @@ class Shopcontroller extends Controller
             ->join('categories', 'products.id_category', 'categories.id')
             ->select('products.*', 'brands.brand as brand', 'categories.category as category')
             ->first();
-        return view('Fontend.page.Home.Productdetail', compact('productdetail', 'category', 'brand'));
+        return view('Fontend.page.Home.Productdetail', compact('productdetail', 'category', 'brand','Review'));
     }
 
     public function Addtocart(Request $request)
@@ -321,6 +325,98 @@ class Shopcontroller extends Controller
     {
         return view('Fontend.page.Reach.Reach');
     }
+    //Update Bill
+    public function ViewUpdateBill()
+    {
+        $id_user     = Auth::id();
+        $re_bill     = History::join('invoice_details', 'invoice_details.id_history', 'histories.id')
+            ->select('histories.email', 'histories.phone', 'histories.name', 'invoice_details.name_product', 'invoice_details.qty', 'invoice_details.price', 'invoice_details.total_amount', 'invoice_details.image_product')
+            ->where('id_user', $id_user)
+            ->get()
+            ->toArray();
+
+        $history_information = History::join('users', 'users.id', 'histories.id_user')
+            ->select(
+                'histories.id_user',
+                'users.address',
+                'users.email',
+                'users.phone',
+                'users.name',
+                DB::raw('SUM(histories.price) as total_price')
+            )
+            ->where('histories.id_user', $id_user)
+            ->groupBy(
+                'histories.id_user',
+                'users.address',
+                'users.email',
+                'users.phone',
+                'users.name'
+            )
+            ->first()
+            ->toArray();
+        return view('Fontend.page.Account.Invoiced', compact('re_bill', 'history_information'));
+    }
+    public function UpdateBill(Request $request)
+    {
+        $user = User::find($request->id);
+        $histories = History::where('id_user', $request->id)->get();
+
+        if ($user) {
+            // Cập nhật người dùng
+            $user->update($request->all());
+
+            // Cập nhật lịch sử // DUng for để sử lý toàn bộ history có id_user bằng nhau:))
+            foreach ($histories as $history) {
+                $history->update([
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                ]);
+            }
+
+            return response()->json([
+                'status'  => 200,
+                'message' => 'Đã Cập Nhật Thành Công Đơn Của Bạn!',
+                'data'    => $histories,
+            ]);
+        } else {
+            return response()->json([
+                'status'  => 500,
+                'message' => 'Không Tìm Thấy Người Dùng!'
+            ]);
+        }
+    }
+
+    //Review Product
+    public function ReviewProduct(Request $request)
+    {
+        $id_user = Auth::id();
+        $user    = User::find($id_user);
+
+        if ($user) {
+            $data = [
+                'id_user'     => $id_user,
+                'name_user'   => $user->name,
+                'avatar_user' => $user->avatar,
+                'id_product'  => $request->id_product,
+                'review'      => $request->Content_Review,
+            ];
+
+            ReviewProduct::create($data);
+
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'Đánh giá thành công!',
+                'review'    => $data['review']
+            ]);
+        }
+        return response()->json([
+            'status'    => 500,
+            'message'   => 'Lỗi hệ thống! Không thể tìm thấy người dùng.'
+        ]);
+    }
+
+
+
     // session()->has('cart'): kiem tra co SS k
     // session()->get('cart');  lấy SS ra
     // session()->put('cart',$getSession); update 1 cái

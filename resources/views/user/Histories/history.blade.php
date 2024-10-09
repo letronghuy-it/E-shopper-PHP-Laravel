@@ -31,11 +31,12 @@
                         <thead>
                             <tr class="text-center align-middle">
                                 <th class="text-center">ID</th>
-                                <th class="text-center">Name</th>
+                                <th class="text-center">Tên Người Mua</th>
                                 <th class="text-center">Email</th>
-                                <th class="text-center">Phone</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Toltal</th>
+                                <th class="text-center">Số điện thoại</th>
+                                <th class="text-center">Ngày Đặt Hàng</th>
+                                <th class="text-center">Trạng Thái Thanh Toán</th>
+                                <th class="text-center">Tổng Tiền</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -47,6 +48,7 @@
                                         <th class="text-center">{{ $value['name'] }}</th>
                                         <th class="text-center">{{ $value['email'] }}</th>
                                         <th class="text-center">{{ $value['phone'] }}</th>
+                                        <th class="text-center">{{ \Carbon\Carbon::parse($value['created_at'])->format('d/m/Y H:i') }}</th>
                                         @if ($value['slug_history'] == 0)
                                             <th class="text-center text-nowrap">
                                                 <a class="btn btn-warning"><b>Chưa thanh toán</b></a>
@@ -56,7 +58,7 @@
                                                 <a class="btn btn-success"><b>Đã Thanh Toán</b></a>
                                             </th>
                                         @endif
-                                        <th class="text-center">{{ number_format($value['price']) }} đ
+                                        <th class="text-center">{{ number_format($value['total_price']) }} đ
                                             <a class="btn btn-infor" href="/admin/history/invoice-detail/{{ $value['id'] }}"><b>Detail</b></a>
 
                                         </th>

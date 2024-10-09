@@ -15,7 +15,6 @@
             {{ session('error') }}
         </div>
     @endif
-
     <div class="row">
         <div class="col-8">
             <form action="/admin/account-user/update-password" method="POST">

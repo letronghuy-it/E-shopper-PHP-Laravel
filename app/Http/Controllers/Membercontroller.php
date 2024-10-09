@@ -192,7 +192,7 @@ class Membercontroller extends Controller
         }
     }
     // Edit product
-    public function EditProduct( Request $request)
+    public function EditProduct(Request $request)
     {
         $product = Product::find($request->id);
         $category = Category::all();
@@ -245,7 +245,7 @@ class Membercontroller extends Controller
                 }
             }
         }
-        $data['image_product'] = json_encode($filenames);// Chuyển Lại Mảng = json;
+        $data['image_product'] = json_encode($filenames); // Chuyển Lại Mảng = json;
 
         //Lấy mảng củ
         $product = Product::where('id', $id)->first();
@@ -283,5 +283,16 @@ class Membercontroller extends Controller
         } else {
             return redirect()->back()->withErrors('success', _('Cập Nhật thất bại'));
         }
+    }
+    //Search-Product
+    public function SearchProduct(Request $request)
+    {
+        $data = Product::where('name', 'like', '%' . $request->key_search . '%')->get();
+
+        return response()->json([
+            'status'  => 200,
+            'message' => 'Tìm Kiếm Thành Công!',
+            'data'    => $data
+        ]);
     }
 }

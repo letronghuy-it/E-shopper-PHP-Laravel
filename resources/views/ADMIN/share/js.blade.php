@@ -21,4 +21,8 @@
 <script src="path/to/jquery.min.js"></script>
 <script src="path/to/jquery.sparkline.min.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 

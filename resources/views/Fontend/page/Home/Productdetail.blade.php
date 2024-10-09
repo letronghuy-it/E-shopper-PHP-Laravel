@@ -268,16 +268,21 @@
                                 <li><a><i class="fa fa-calendar-o"></i>{{ date('d M Y', strtotime(now())) }}</a></li>
 
                             </ul>
+                            <div class="mb-2" id="content-review">
+                            @foreach ($Review as $key=>$value )
+                                    <p>{{$value['review']}}</p>
+                            @endforeach
+                            </div>
                             <p><b>Viết Đánh Giá sản phẩm</b></p>
-
                             <form action="#">
                                 <span>
-                                    <input type="text"  disabled
+                                    <input type="text" disabled
                                         value="{{ Auth::user() ? Auth::user()->name : 'Your Name' }}" id="name" />
                                     <input disabled type="email"
-                                        value="{{ Auth::user() ? Auth::user()->email : 'Email Address' }}" id="email" />
+                                        value="{{ Auth::user() ? Auth::user()->email : 'Email Address' }}"
+                                        id="email" />
                                 </span>
-                                <textarea name=""></textarea>
+                                <textarea name="" id="contenReview"></textarea>
                                 <b>Rating: </b>
                                 <div class="rate">
                                     <div class="vote">
@@ -286,10 +291,11 @@
                                         <div class="star_3 ratings_stars"><input value="3" type="hidden"></div>
                                         <div class="star_4 ratings_stars"><input value="4" type="hidden"></div>
                                         <div class="star_5 ratings_stars"><input value="5" type="hidden"></div>
-                                        <span class="rate-np"></span>
                                     </div>
+                                    <p class="rate-np">5.0</p>
                                 </div>
-                                <button type="submit" class="btn btn-default pull-right">
+                                <button type="submit" class="btn btn-default pull-right" id="btn-review"
+                                    data-id={{ $productdetail->id }}>
                                     Submit
                                 </button>
                             </form>
@@ -408,6 +414,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
             $("#similar-product img").click(function() {
                 var image = $(this).attr("src");
                 $(".view-product img").attr("src", image);
@@ -432,25 +439,6 @@
                     alert("Vui lòng đăng nhập để Add to cart.");
                 }
             });
-
-            // Cập nhật lại số sao
-            // function updateStars(averageRate) {
-            //     var fullStars = Math.round(averageRate);
-            //     var hasHalfStar = averageRate % 1 !== 0;
-
-            //     $('.rate-np').text(averageRate.toFixed(1));
-            //     $('.ratings_stars').removeClass('ratings_over').removeClass('ratings_half');
-
-            //     for (var i = 1; i <= fullStars; i++) {
-            //         $('.star_' + i).addClass('ratings_over');
-            //     }
-
-            //     if (hasHalfStar) {
-            //         $('.star_' + (fullStars + 1)).addClass('ratings_half');
-            //     }
-            // }
-
-
             // Hover cho ngôi sao
             $('.ratings_stars').hover(
                 function() {
@@ -460,12 +448,46 @@
                     $(this).prevAll().addBack().removeClass('ratings_hover');
                 }
             );
+
             $('.ratings_stars').click(function(e) {
-                var checkLogin = "{{ Auth::Check() }}";
+                var checkLogin = "{{ Auth::check() }}";
                 if (checkLogin) {
                     var rate = $(this).find("input").val();
+
+                    if ($(this).hasClass('ratings_over')) {
+                        $('.ratings_stars').removeClass('ratings_over');
+                        $(this).prevAll().addBack().addClass('ratings_over');
+                    } else {
+                        $(this).prevAll().addBack().addClass('ratings_over');
+                    }
+                    var product_id = $(this).data('id');
+                    console.log(id_Product);
+
+
+
                 } else {
                     alert('Yêu cầu đăng nhập mới được Login!');
+                }
+            });
+            //submit Reiew
+            $(document).on('click', '.pull-right', function() {
+                var product_id = $(this).data('id');
+                var Content_Review = $("#contenReview").val();
+                var checkLogin = "{{ Auth::Check() }}";
+                if (checkLogin) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ url(route('review.Product')) }}',
+                        data: {
+                            id_product: product_id,
+                            Content_Review: Content_Review,
+                        },
+                        success: function(res) {
+                            $('#content-review').append(res.review);
+                        }
+                    });
+                } else {
+                    alert("Vui lòng đăng nhập để Add to cart.");
                 }
             })
             $('form').submit(function(e) {
@@ -481,11 +503,7 @@
                 }
 
             });
-
-
         });
-
-
         $(".view-product a").prettyPhoto();
     </script>
 @endsection

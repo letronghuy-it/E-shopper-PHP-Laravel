@@ -93,8 +93,8 @@ class BlogController extends Controller
         $brand    =    Brand::all();
         $blog = Blog::find($request->id);
         if ($blog) {
-            $comments = Blog::join('blogcomment', 'blogs.id', 'blogcomment.id_blog')
-                ->select('blogs.*', 'blogcomment.*')
+            $comments = Blog::join('blog_coments', 'blogs.id', 'blog_coments.id_blog')
+                ->select('blogs.*', 'blog_coments.*')
                 ->get()->toArray();
             // dd($comments);
             $next = Blog::where('id', '>', $blog->id)->orderBy('id', 'asc')->first();

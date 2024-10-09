@@ -5,6 +5,8 @@
     <!-- Custom CSS -->
     <link href="/admin/dist/css/style.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-Gn5384xqQ1dPs3AnNQzryOUpu7gECRzKHJ/XBQlHAAeNQdRUgJeP2IrGwpL8C9/dRIe+G4YXJW49IbELA4QV3w==" crossorigin="anonymous" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+
   <!-- AJAX -->
   <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
   <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

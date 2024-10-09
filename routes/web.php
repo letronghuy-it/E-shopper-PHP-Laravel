@@ -9,8 +9,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Dashboardcontroller;
 use App\Http\Controllers\historyController;
+use App\Http\Controllers\ImportProductController;
 use App\Http\Controllers\Membercontroller;
 use App\Http\Controllers\Shopcontroller;
+use App\Http\Controllers\StatisticalController;
 use App\Http\Controllers\Testcontroller;
 use App\Http\Controllers\Usercontroller;
 use App\Models\Blog;
@@ -32,6 +34,8 @@ Route::group([
 
     Route::get('/load-data-product', [Shopcontroller::class, 'loadproduct'])->name('load.data.product');
     Route::get('/product-detail/{id}', [Shopcontroller::class, 'productdetail']);
+    Route::post('/review-product',[Shopcontroller::class,'ReviewProduct'])->name('review.Product');
+
     // ALL SEARCH
     Route::post('/search-product', [Shopcontroller::class, 'Searchproduct'])->name('search.product');
 
@@ -46,6 +50,8 @@ Route::group([
     //checkout
     Route::get('/check-out', [Shopcontroller::class, 'Checkout'])->name('check.out');
     Route::post('/oder-bill', [Shopcontroller::class, 'Oder'])->name('oder.bill');
+    Route::get('/view-update-bill', [Shopcontroller::class, 'ViewUpdateBill'])->name('view-update-bill');
+    Route::post('/update-bill', [Shopcontroller::class, 'UpdateBill'])->name('update-bill');
 
     //shop
     Route::get('/page-shop', [Shopcontroller::class, 'PageShop'])->name('page.shop');
@@ -123,6 +129,9 @@ Route::group([
     Route::get('/edit-product/{id}', [Membercontroller::class, 'EditProduct']);
     Route::post('/edit-product/{id}', [Membercontroller::class, 'UpdateProduct']);
 
+    Route::post('/search-product', [Membercontroller::class, 'SearchProduct'])->name('search-product');
+
+
 
     Route::group(['prefix' => '/country'], function () {
         Route::get('/', [CountryController::class, 'indexcountry']);
@@ -164,7 +173,6 @@ Route::group([
         Route::get('/search-bill-unpaid', [HistoryController::class, 'unpaid'])->name('search.bil.unpaid');
         Route::get('/search-bill-unapprove', [HistoryController::class, 'unapprove'])->name('search.bil.unapprove');
 
-        Route::get('/detail-history', [HistoryController::class, 'detailhistory'])->name('search.bil.unapprove');
         Route::get('/invoice-detail/{id}', [HistoryController::class, 'viewinvoicedetail'])->name('invoice-detail');
 
     });
@@ -178,4 +186,34 @@ Route::group([
         Route::get('/update-password/{id}',[AccountController::class,'EditAcountuser']);
         Route::post('/update-password',[AccountController::class,'UpdateAcountuser']);
     });
+    Route::group(['prefix'=>'/import-product'],function(){
+        Route::get('/',[ImportProductController::class,'viewImportProduct'])->name('view.ImportProduct');
+        Route::get('/LoadProduct',[ImportProductController::class,'LoadDataProduct'])->name('LoadDataProduct');
+        //Load InvoiceImportProduct
+        Route::get('/InvoiceImportProduct',[ImportProductController::class,'LoadInvoiceImportProduct'])->name('Load.Invoice.Import.Product');
+
+        Route::post('/add-Product-in-Bill',[ImportProductController::class,'addProductInBill'])->name('add.Product.in.Bill');
+        Route::get('/Load-Product-in-Bill',[ImportProductController::class,'loadProductInBill'])->name('load.Product.In.Bill');
+
+
+        Route::post('/search-Product-in-Bill',[ImportProductController::class,'searchProductInBill'])->name('search.Product.in.Bill');
+        Route::post('/Importbill-product',[ImportProductController::class,'ImportProductInBill'])->name('import.Product.Bill');
+
+        Route::post('/Delete-Importbill-product',[ImportProductController::class,'DeleteImportProductInBill'])->name('Delete.import.Product.Bill');
+        Route::post('/Delete-Import-product',[ImportProductController::class,'DeleteImportProduct'])->name('Delete.import.Product');
+
+        Route::get('/Detail-Importbill-product/{id}',[ImportProductController::class,'DetailImportProductInBill'])->name('detail.import.Product.Bill');
+
+    });
+    Route::group(['prefix'=>'/statistical'],function(){
+        Route::get('/',[StatisticalController::class,'viewStatistical']);
+        Route::get('/LoadDatastatistical',[StatisticalController::class,'LoadStatisticalAll'])->name('Load.Statistical.All');
+
+        Route::post('/handle-statistical',[StatisticalController::class,'handleStatisticalAll'])->name('handle.Statistical.All');
+
+        Route::get('/Load-user-review',[StatisticalController::class,'LoaduserReview'])->name('Load.user.Review');
+        Route::post('/Delete-user-review',[StatisticalController::class,'DestoyuserReview'])->name('Destroy.user.Review');
+
+    });
+
 });
